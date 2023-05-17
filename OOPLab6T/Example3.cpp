@@ -1,95 +1,89 @@
-﻿#include "Lab6Example.h"
 #include <iostream>
 #include <string>
 using namespace std;
-namespace SpaceExample3 {
-    // MultipleiInherance.cpp 
-// Ієрархія типів складається з сутностей: 
-// машина, пасажирський транспорт і автобус.
-//
 
+/*Ієрархія типів складається з сутностей: студент, батько сімейства та
+студент-батько сімейства*/
 
-    class Car {
-    protected:
-        string marka;
-        float power;
-        int numberOfWheels;
-    public:
-        Car() : marka("Neoplan"), power(5.2f), numberOfWheels(6) {
-        }
-        Car(string m, float p, int nw) : marka(m), power(p), numberOfWheels(nw) {
-        }
-        string getMarka() { return marka; }
-        void setMarka(string m) { marka = m; }
-        float getPower() {
-            return power;
-        }
-        void setPower(float p) {
-            power = p;
-        }
-        int getNumberOfWheels() {
-            return numberOfWheels;
-        }
-        void setNumberOfWheels(int n) {
-            numberOfWheels = n;
-        }
-        string toString() {
-            string r = marka + "\t" + to_string(power) + "\t" + to_string(numberOfWheels) + "\t";
-            return r;
-        }
-    };
+class Student {
+protected:
+    string titleOfSubject;
+    int course;
 
-    class PassengerTransport {
-    protected:
-        int flightNumber;
-        int numberOfPassengerSeats;
-    public:
-        PassengerTransport() : flightNumber(101), numberOfPassengerSeats(45) {}
-        PassengerTransport(int f, int n) : flightNumber(f), numberOfPassengerSeats(n) {}
-        int  getFlightNumber() { return flightNumber; }
-        void setFlightNumber(int f) { flightNumber = f; }
-        int getNumberOfPassengerSeats() { return numberOfPassengerSeats; }
-        void setnumberOfPassengerSeats(int n) { numberOfPassengerSeats = n; }
-        string toString() {
-            string r = to_string(flightNumber) + "\t" + to_string(numberOfPassengerSeats) + "\t";
-            return r;
-        }
-    };
-    class AutoBus : public Car, public  PassengerTransport
-    {
-        string busRoute;
-    public:
-        AutoBus() : busRoute("Kyiv-Chernivci") {}
-        AutoBus(string m, float p, int nw, int f, int n, string bs)
-            : Car(m, p, nw), PassengerTransport(f, n), busRoute(bs) {}
-        string getbusRoute() {
-            return busRoute;
-        }
-        void setbusRoute(string bs) { busRoute = bs; }
-
-        string toString() {
-            string r = Car::toString() + PassengerTransport::toString() + busRoute;
-            return r;
-        }
-    };
-
-    int mainExample3()
-    {
-        AutoBus def;
-        AutoBus lvCh("Iveko", 6.2f, 6, 301, 40, "Lviv-Chernivci");
-        AutoBus* pVnCn = new AutoBus();
-        pVnCn->setMarka("Ikarus");
-        pVnCn->setPower(7.2f);
-        pVnCn->setNumberOfWheels(6);
-        pVnCn->setFlightNumber(403);
-        pVnCn->setnumberOfPassengerSeats(42);
-        pVnCn->setbusRoute("Vinnicya-Chernivci");
-
-        cout << def.toString() << endl;
-        cout << lvCh.toString() << endl;
-        cout << pVnCn->toString() << endl;
-        return 0;
+public:
+    Student() {}
+    Student(string tit) { titleOfSubject = tit; }
+    Student(string tit, int c) {
+        titleOfSubject = tit;
+        course = c;
     }
+    friend ostream& operator<<(ostream& os, Student& a);
+    friend istream& operator>>(istream& os, Student& a);
+};
 
+ostream& operator<<(ostream& out, Student& a) {
+    out << " Title of subject" << a.titleOfSubject << " course:" << a.course;
+    return out;
+}
+istream& operator>>(istream& in, Student& a) {
+    cout << "Enter the tite of subject and course:";
+    in >> a.titleOfSubject;
+    in >> a.course;
+    return in;
+}
 
+class FamilyDad {
+protected:
+    int kids;
+    int merrigeDate;
+    FamilyDad() {};
+    FamilyDad(int k) { kids = k; };
+    FamilyDad(int k, int merri) {
+        kids = k;
+        merrigeDate = merri;
+    };
+    friend ostream& operator<<(ostream& os, FamilyDad& a);
+    friend istream& operator>>(istream& os, FamilyDad& a);
+};
+
+ostream& operator<<(ostream& out, FamilyDad& a) {
+    out << "Kids:" << a.kids << "merrige date:" << a.merrigeDate << endl;
+    return out;
+}
+
+istream& operator>>(istream& in, FamilyDad& a) {
+    cout << "Enter the number of kids and merrige date:";
+    in >> a.kids >> a.merrigeDate;
+    return in;
+}
+
+class StudentFamilyDad : public Student, public FamilyDad {
+public:
+    StudentFamilyDad() {};
+    StudentFamilyDad(string tit, int c, int k, int merrige)
+        : FamilyDad(k, merrige), Student(tit, c) {}
+    friend ostream& operator<<(ostream& os, StudentFamilyDad& a);
+    friend istream& operator>>(istream& os, StudentFamilyDad& a);
+};
+
+ostream& operator<<(ostream& out, StudentFamilyDad& a) {
+    out << "Title of subject:" << a.titleOfSubject << " course:" << a.course
+        << " Kids:" << a.kids << " merrige date:" << a.merrigeDate << endl;
+    return out;
+};
+
+istream& operator>>(istream& in, StudentFamilyDad& a) {
+    cout << "Enter title of subject, course, kids, merrige date:";
+    in >> a.titleOfSubject;
+    in >> a.course;
+    in >> a.kids;
+    in >> a.merrigeDate;
+    return in;
+}
+
+int main() {
+    StudentFamilyDad d;
+    cin >> d;
+    cout << d;
+    return 0;
 }
