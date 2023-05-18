@@ -127,7 +127,7 @@ public:
     }
 };
 
-int main() {
+int example1() {
 
     std::cout << "  RESULT:  \n";
     RV d(1, 2, 3, 4.5, 5, 6);
