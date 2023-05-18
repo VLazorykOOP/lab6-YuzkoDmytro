@@ -47,7 +47,7 @@ public:
     virtual float S() override { return (base1 + base2) * height / 2; }
 };
 
-int main() {
+int example2() {
 
     cout << "RESULT:\n";
     Rectangle r(2, 3);
