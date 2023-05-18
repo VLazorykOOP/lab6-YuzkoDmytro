@@ -81,7 +81,7 @@ istream& operator>>(istream& in, StudentFamilyDad& a) {
     return in;
 }
 
-int main() {
+int example3() {
     StudentFamilyDad d;
     cin >> d;
     cout << d;
